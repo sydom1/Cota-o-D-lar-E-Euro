@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usando a API do AwesomeAPI</title>
+</head>
+<body>
+
+    <h1>Teste API</h1>
+
+    <h2 id="title">and</h2>
+    <p id="date">
+        Data: <span id="thisdate"></span>
+    </p>
+
+    <p id="value">
+        Cotação do Dolar: <span id="cotacaoDolar"></span><br>
+        Cotação do Euro: <span id="cotacaoEuro"></span>
+    </p>
+
+    <script>
+        const url = 'https://economia.awesomeapi.com.br/json/last/'
+        const coins = 'USD-BRL,EUR-BRL'
+
+        fetch(url + coins)
+            .then(response => response.json())
+            .then(function(data){
+                const dolarReal = data.USDBRL
+                const euroReal = data.EURBRL
+
+                let estaData = new Date(dolarReal.create_date)
+
+                document.getElementById('title').innerHTML = dolarReal.name
+                document.getElementById('thisdate').innerHTML = estaData.toLocaleString()
+                
+                document.getElementById('cotacaoDolar').innerHTML = parseFloat(dolarReal.high).toLocaleString('pt-br', {
+                    style: 'currency',
+                    currency: 'BRL'
+                })
+
+                document.getElementById('cotacaoEuro').innerHTML = parseFloat(euroReal.high).toLocaleString('pt-br', {
+                    style: 'currency',
+                    currency: 'BRL'
+                })
+            })
+    </script>
+    
+</body>
+</html>
